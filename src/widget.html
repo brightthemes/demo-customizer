@@ -1,0 +1,84 @@
+<div hidden class="fixed inset-y-0 right-0 z-30 flex items-center pointer-events-none font-sans text-stone-100" x-data="customize" x-init="reveal()" @keydown.escape.window="panel = null">
+  <div class="flex items-center gap-2 max-h-full">
+    <div class="flex flex-col gap-2 shrink-0 self-center pointer-events-auto">
+      <button type="button" class="flex items-center justify-center size-10 rounded-xl bg-stone-900/30 text-white backdrop-blur-md cursor-pointer transition-colors hover:bg-stone-900/50 [&_svg]:size-[18px]" :class="panel === 'appearance' && 'bg-stone-900/80!'" @click="toggle('appearance')" :aria-expanded="panel === 'appearance'" aria-controls="demo-appearance-panel" aria-label="Appearance">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 13V3"/><path d="M2 14h4"/><path d="M10 8h4"/><path d="M18 16h4"/></svg>
+      </button>
+      <button type="button" class="flex items-center justify-center size-10 rounded-xl bg-stone-900/30 text-white backdrop-blur-md cursor-pointer transition-colors hover:bg-stone-900/50 [&_svg]:size-[18px]" :class="panel === 'themes' && 'bg-stone-900/80!'" @click="toggle('themes')" :aria-expanded="panel === 'themes'" aria-controls="demo-themes-panel" aria-label="Other themes">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      </button>
+      <a class="flex items-center justify-center size-10 rounded-xl bg-stone-900/30 text-white backdrop-blur-md cursor-pointer transition-colors hover:bg-stone-900/50 no-underline [&_svg]:size-[18px]" :href="buyUrl()" aria-label="Buy this theme">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </a>
+    </div>
+
+    <div class="shrink-0 self-center w-0 max-h-screen min-h-0 overflow-hidden pointer-events-auto transition-[width] duration-[280ms] ease-[ease] motion-reduce:transition-none" :class="[panel && 'w-[min(18rem,calc(100vw-50px))]!', panel === 'themes' ? 'rounded-none' : 'rounded-l-xl']">
+      <div class="box-border w-[min(18rem,calc(100vw-50px))] max-h-screen overflow-auto overscroll-contain p-4 bg-stone-900 text-stone-100" :class="panel === 'themes' ? 'rounded-none' : 'rounded-l-xl'">
+        <div id="demo-appearance-panel" x-show="panel === 'appearance'" role="dialog" aria-label="Appearance">
+          <p class="m-0 mb-3.5 text-xs font-semibold">Appearance</p>
+          <template x-for="control in controls" :key="control.id">
+            <div>
+              <template x-if="control.type === 'brand'">
+                <label class="flex flex-row items-center justify-between gap-1.5 mb-3.5">
+                  <span class="text-[10px] font-medium tracking-wider uppercase text-stone-400">Brand</span>
+                  <input class="size-8 p-0 border border-stone-700 rounded-lg bg-transparent cursor-pointer overflow-hidden [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-0 [&::-webkit-color-swatch]:rounded-lg [&::-moz-color-swatch]:border-0 [&::-moz-color-swatch]:rounded-lg" type="color" x-model="brand" @input="setBrand(brand)" aria-label="Brand color">
+                </label>
+              </template>
+
+              <template x-if="control.type === 'select'">
+                <label class="flex flex-col gap-1.5 mb-3.5">
+                  <span class="text-[10px] font-medium tracking-wider uppercase text-stone-400" x-text="control.label"></span>
+                  <select class="scheme-dark appearance-none w-full py-1.5 pr-9 pl-2.5 text-xs text-stone-100 border border-stone-700 rounded-lg bg-stone-800 bg-no-repeat bg-[length:12px] bg-[position:right_12px_center] bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2712%27%20height=%2712%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27%23a8a29e%27%20stroke-width=%272.5%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27m6%209%206%206%206-6%27/%3E%3C/svg%3E')]" x-init="fillSelect($el, control.options)" :value="values[control.attr]" @change="setSelect(control, $event.target.value)"></select>
+                </label>
+              </template>
+
+              <template x-if="control.type === 'images' && visible(control)">
+                <div class="flex flex-col gap-1.5 mb-3.5">
+                  <span class="text-[10px] font-medium tracking-wider uppercase text-stone-400" x-text="control.label"></span>
+                  <template x-if="panel === 'appearance'">
+                    <div class="grid grid-cols-3 gap-2">
+                      <template x-for="src in images" :key="src">
+                        <button type="button" class="aspect-square p-0 overflow-hidden border border-stone-700 rounded-lg bg-stone-800 cursor-pointer opacity-60 transition-opacity hover:opacity-100" :class="image === src && 'opacity-100!'" @click="setImage(control, src)" :aria-pressed="image === src" :aria-label="'Background photo ' + (images.indexOf(src) + 1)">
+                          <img class="block size-full object-cover" :src="thumb(src)" alt="" width="80" height="80">
+                        </button>
+                      </template>
+                    </div>
+                  </template>
+                </div>
+              </template>
+
+              <template x-if="control.type === 'fonts'">
+                <div>
+                  <label class="flex flex-col gap-1.5 mb-3.5">
+                    <span class="text-[10px] font-medium tracking-wider uppercase text-stone-400">Heading</span>
+                    <select class="scheme-dark appearance-none w-full py-1.5 pr-9 pl-2.5 text-xs text-stone-100 border border-stone-700 rounded-lg bg-stone-800 bg-no-repeat bg-[length:12px] bg-[position:right_12px_center] bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2712%27%20height=%2712%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27%23a8a29e%27%20stroke-width=%272.5%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27m6%209%206%206%206-6%27/%3E%3C/svg%3E')]" x-init="fillSelect($el, headingOptions)" x-model="heading" @change="setFont('heading', heading)"></select>
+                  </label>
+                  <label class="flex flex-col gap-1.5 mb-3.5">
+                    <span class="text-[10px] font-medium tracking-wider uppercase text-stone-400">Body</span>
+                    <select class="scheme-dark appearance-none w-full py-1.5 pr-9 pl-2.5 text-xs text-stone-100 border border-stone-700 rounded-lg bg-stone-800 bg-no-repeat bg-[length:12px] bg-[position:right_12px_center] bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2712%27%20height=%2712%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27%23a8a29e%27%20stroke-width=%272.5%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27m6%209%206%206%206-6%27/%3E%3C/svg%3E')]" x-init="fillSelect($el, bodyOptions)" x-model="body" @change="setFont('body', body)"></select>
+                  </label>
+                </div>
+              </template>
+            </div>
+          </template>
+        </div>
+
+        <div id="demo-themes-panel" x-show="panel === 'themes'" role="dialog" aria-label="Other themes">
+          <p class="m-0 mb-3.5 text-xs font-semibold">Themes</p>
+          <template x-if="panel === 'themes'">
+            <ul class="flex flex-col m-0 p-0 list-none divide-y divide-stone-700">
+              <template x-for="item in catalog()" :key="item.slug">
+                <li class="py-4 first:pt-0">
+                  <a class="flex flex-col gap-2 text-stone-100 no-underline" :href="item.demo">
+                    <img class="block w-full aspect-[16/10] object-cover object-top rounded-lg border border-stone-700 bg-stone-800 shadow-xs" :src="item.image" alt="" width="280" height="175">
+                    <strong class="text-xs font-semibold" x-text="item.name"></strong>
+                  </a>
+                </li>
+              </template>
+            </ul>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
