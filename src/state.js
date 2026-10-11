@@ -18,6 +18,8 @@ function targetFor(control) {
 export function createCustomize(themeId) {
   return {
     panel: null,
+    shown: null,
+    sheetHeight: null,
     themeId,
     controls: controlsFor(themeId),
     brand: '#1a1a1a',
@@ -34,6 +36,7 @@ export function createCustomize(themeId) {
     },
 
     reveal() {
+      this.el = this.$el
       const show = () => {
         this.sync()
         this.$el.hidden = false
@@ -43,8 +46,41 @@ export function createCustomize(themeId) {
     },
 
     toggle(name) {
-      this.panel = this.panel === name ? null : name
-      if (this.panel === 'appearance') this.loadFonts()
+      if (this.panel === name) {
+        this.close()
+        return
+      }
+      this.shown = name
+      this.panel = name
+      if (name === 'appearance') this.loadFonts()
+    },
+
+    close() {
+      if (!this.panel) return
+      const root = this.el
+      const sheet = root?.querySelector('[data-demo-sheet]')
+      const drawer = root?.querySelector('[data-demo-drawer]')
+      if (sheet) this.sheetHeight = sheet.getBoundingClientRect().height
+      this.panel = null
+      const finish = () => {
+        this.sheetHeight = null
+        if (this.panel) return
+        this.shown = null
+      }
+      if (!drawer || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        finish()
+        return
+      }
+      const onEnd = (event) => {
+        if (event.target !== drawer || event.propertyName !== 'width') return
+        drawer.removeEventListener('transitionend', onEnd)
+        finish()
+      }
+      drawer.addEventListener('transitionend', onEnd)
+      setTimeout(() => {
+        drawer.removeEventListener('transitionend', onEnd)
+        finish()
+      }, 320)
     },
 
     loadFonts() {

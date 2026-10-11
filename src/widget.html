@@ -1,4 +1,4 @@
-<div hidden class="fixed inset-y-0 right-0 z-30 flex items-center pointer-events-none font-sans text-stone-100" x-data="customize" x-init="reveal()" @keydown.escape.window="panel = null">
+<div hidden class="fixed inset-y-0 right-0 z-30 flex items-center pointer-events-none font-sans text-stone-100" x-data="customize" x-init="reveal()" @keydown.escape.window="close()">
   <div class="flex items-center gap-2 max-h-full">
     <div class="flex flex-col gap-2 shrink-0 self-center pointer-events-auto">
       <button type="button" class="flex items-center justify-center size-10 rounded-xl bg-stone-900/30 text-white backdrop-blur-md cursor-pointer transition-colors hover:bg-stone-900/50 [&_svg]:size-[18px]" :class="panel === 'appearance' && 'bg-stone-900/80!'" @click="toggle('appearance')" :aria-expanded="panel === 'appearance'" aria-controls="demo-appearance-panel" aria-label="Appearance">
@@ -12,9 +12,9 @@
       </a>
     </div>
 
-    <div class="shrink-0 self-center w-0 max-h-screen min-h-0 overflow-hidden pointer-events-auto transition-[width] duration-[280ms] ease-[ease] motion-reduce:transition-none" :class="[panel && 'w-[min(18rem,calc(100vw-50px))]!', panel === 'themes' ? 'rounded-none' : 'rounded-l-xl']">
-      <div class="box-border w-[min(18rem,calc(100vw-50px))] max-h-screen overflow-auto overscroll-contain p-4 bg-stone-900 text-stone-100" :class="panel === 'themes' ? 'rounded-none' : 'rounded-l-xl'">
-        <div id="demo-appearance-panel" x-show="panel === 'appearance'" role="dialog" aria-label="Appearance">
+    <div data-demo-drawer class="shrink-0 self-center w-0 max-h-screen min-h-0 overflow-hidden pointer-events-auto transition-[width] duration-[280ms] ease-[ease] motion-reduce:transition-none" :class="[panel && 'w-[min(18rem,calc(100vw-50px))]!', shown === 'themes' ? 'rounded-none' : 'rounded-l-xl']">
+      <div data-demo-sheet class="box-border w-[min(18rem,calc(100vw-50px))] max-h-screen overflow-auto overscroll-contain p-4 bg-stone-900 text-stone-100" :class="shown === 'themes' ? 'rounded-none' : 'rounded-l-xl'" :style="sheetHeight ? { height: sheetHeight + 'px' } : {}">
+        <div id="demo-appearance-panel" x-show="shown === 'appearance'" role="dialog" aria-label="Appearance">
           <p class="m-0 mb-3.5 text-xs font-semibold">Appearance</p>
           <template x-for="control in controls" :key="control.id">
             <div>
@@ -35,7 +35,7 @@
               <template x-if="control.type === 'images' && visible(control)">
                 <div class="flex flex-col gap-1.5 mb-3.5">
                   <span class="text-[10px] font-medium tracking-wider uppercase text-stone-400" x-text="control.label"></span>
-                  <template x-if="panel === 'appearance'">
+                  <template x-if="shown === 'appearance'">
                     <div class="grid grid-cols-3 gap-2">
                       <template x-for="src in images" :key="src">
                         <button type="button" class="aspect-square p-0 overflow-hidden border border-stone-700 rounded-lg bg-stone-800 cursor-pointer opacity-60 transition-opacity hover:opacity-100" :class="image === src && 'opacity-100!'" @click="setImage(control, src)" :aria-pressed="image === src" :aria-label="'Background photo ' + (images.indexOf(src) + 1)">
@@ -63,9 +63,9 @@
           </template>
         </div>
 
-        <div id="demo-themes-panel" x-show="panel === 'themes'" role="dialog" aria-label="Other themes">
+        <div id="demo-themes-panel" x-show="shown === 'themes'" role="dialog" aria-label="Other themes">
           <p class="m-0 mb-3.5 text-xs font-semibold">Themes</p>
-          <template x-if="panel === 'themes'">
+          <template x-if="shown === 'themes'">
             <ul class="flex flex-col m-0 p-0 list-none divide-y divide-stone-700">
               <template x-for="item in catalog()" :key="item.slug">
                 <li class="py-4 first:pt-0">
