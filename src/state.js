@@ -114,16 +114,18 @@ export function createCustomize(themeId) {
       const same = (src) => {
         if (!current || src === current) return src === current
         const id = (url) => {
-          const match = String(url).match(/photo-[A-Za-z0-9_-]+/)
-          return match ? match[0] : ''
+          const photo = String(url).match(/photo-[A-Za-z0-9_-]+/)
+          if (photo) return photo[0]
+          const file = String(url).match(/glass-bg-\d+/)
+          return file ? file[0] : ''
         }
         const a = id(src)
         const b = id(current)
         return Boolean(a && a === b)
       }
-      const extras = this.covers.filter((src) => !same(src)).slice(0, 5)
-      this.images = current ? [current].concat(extras) : this.covers.slice()
-      if (current) this.image = current
+      this.images = this.covers.slice()
+      const known = this.covers.find((src) => same(src))
+      if (known) this.image = known
     },
 
     readImage(selector) {

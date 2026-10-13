@@ -21,14 +21,9 @@ export const themes = [
   { slug: 'auden', name: 'Auden', image: 'https://brightthemes.com/images/themes/theme-auden-screenshot.png', demo: 'https://auden.brightthemes.com/' },
 ]
 
-export const covers = [
-  'https://images.unsplash.com/photo-1507525428034-b723cf961d3e',
-  'https://images.unsplash.com/photo-1469474968028-56623f02e42e',
-  'https://images.unsplash.com/photo-1441974231531-c6227db76b6e',
-  'https://images.unsplash.com/photo-1519681393784-d120267933ba',
-  'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05',
-  'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee',
-]
+export const covers = Array.from({ length: 12 }, (_, index) =>
+  'https://glass.mymagic.page/content/images/2026/10/glass-bg-' + (index + 1) + '.jpg'
+)
 
 export const headingFonts = [
   ['', 'Theme default'],
