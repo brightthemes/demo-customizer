@@ -21,8 +21,8 @@ export const themes = [
   { slug: 'auden', name: 'Auden', image: 'https://brightthemes.com/images/themes/theme-auden-screenshot.png', demo: 'https://auden.brightthemes.com/' },
 ]
 
-export const covers = Array.from({ length: 12 }, (_, index) =>
-  'https://glass.mymagic.page/content/images/2026/10/glass-bg-' + (index + 1) + '.jpg'
+export const covers = [1, 2, 6, 7, 8, 9, 10, 11, 12].map((index) =>
+  'https://glass.mymagic.page/content/images/2026/10/glass-bg-' + index + '.jpg'
 )
 
 export const headingFonts = [
