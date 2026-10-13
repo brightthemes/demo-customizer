@@ -1,10 +1,10 @@
 <div hidden class="fixed inset-y-0 right-0 z-30 flex items-center pointer-events-none font-sans text-stone-100" x-data="customize" x-init="reveal()" @keydown.escape.window="close()">
   <div class="flex items-center gap-2 max-h-full">
     <div class="flex flex-col gap-2 shrink-0 self-center pointer-events-auto">
-      <button type="button" class="flex items-center justify-center size-10 rounded-xl bg-stone-900/40 text-white backdrop-blur-md cursor-pointer transition-colors hover:bg-stone-900/60 [&_svg]:size-[18px]" :class="panel === 'appearance' && 'bg-stone-900/90!'" @click="toggle('appearance')" :aria-expanded="panel === 'appearance'" aria-controls="demo-appearance-panel" aria-label="Appearance">
+      <button type="button" class="flex items-center justify-center size-10 rounded-xl bg-stone-900/40 text-white backdrop-blur-md cursor-pointer transition-colors hover:bg-stone-900/60 [&_svg]:size-[18px]" :class="panel === 'appearance' && 'bg-stone-900/90!'" @click="toggle('appearance')" :aria-expanded="panel === 'appearance'" aria-controls="demo-appearance-panel" aria-label="Settings">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5H3"/><path d="M12 19H3"/><path d="M14 3v4"/><path d="M16 17v4"/><path d="M21 12h-9"/><path d="M21 19h-5"/><path d="M21 5h-7"/><path d="M8 10v4"/><path d="M8 12H3"/></svg>
       </button>
-      <button type="button" class="flex items-center justify-center size-10 rounded-xl bg-stone-900/40 text-white backdrop-blur-md cursor-pointer transition-colors hover:bg-stone-900/60 [&_svg]:size-[18px]" :class="panel === 'themes' && 'bg-stone-900/90!'" @click="toggle('themes')" :aria-expanded="panel === 'themes'" aria-controls="demo-themes-panel" aria-label="Other themes">
+      <button type="button" class="flex items-center justify-center size-10 rounded-xl bg-stone-900/40 text-white backdrop-blur-md cursor-pointer transition-colors hover:bg-stone-900/60 [&_svg]:size-[18px]" :class="panel === 'themes' && 'bg-stone-900/90!'" @click="toggle('themes')" :aria-expanded="panel === 'themes'" aria-controls="demo-themes-panel" aria-label="All themes">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M14 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M4 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M14 17h6m-3 -3v6"/></svg>
       </button>
       <a class="flex items-center justify-center size-10 rounded-xl bg-stone-900/40 text-white backdrop-blur-md cursor-pointer transition-colors hover:bg-stone-900/60 no-underline [&_svg]:size-[18px]" :href="buyUrl()" aria-label="Buy this theme">
@@ -14,8 +14,8 @@
 
     <div data-demo-drawer class="shrink-0 self-center w-0 max-h-screen min-h-0 overflow-hidden pointer-events-auto transition-[width] duration-[280ms] ease-[ease] motion-reduce:transition-none" :class="[panel && 'w-[min(18rem,calc(100vw-50px))]!', shown === 'themes' ? 'rounded-none' : 'rounded-l-xl']">
       <div data-demo-sheet class="box-border w-[min(18rem,calc(100vw-50px))] max-h-screen overflow-auto overscroll-contain p-4 bg-stone-900 text-stone-100" :class="shown === 'themes' ? 'rounded-none' : 'rounded-l-xl'" :style="sheetHeight ? { height: sheetHeight + 'px' } : {}">
-        <div id="demo-appearance-panel" x-show="shown === 'appearance'" role="dialog" aria-label="Appearance">
-          <p class="m-0 mb-3.5 text-xs font-semibold">Appearance</p>
+        <div id="demo-appearance-panel" x-show="shown === 'appearance'" role="dialog" aria-label="Settings">
+          <p class="m-0 mb-3.5 text-xs font-semibold">Settings</p>
           <template x-for="control in controls" :key="control.id">
             <div>
               <template x-if="control.type === 'brand'">
@@ -63,8 +63,8 @@
           </template>
         </div>
 
-        <div id="demo-themes-panel" x-show="shown === 'themes'" role="dialog" aria-label="Other themes">
-          <p class="m-0 mb-3.5 text-xs font-semibold">Themes</p>
+        <div id="demo-themes-panel" x-show="shown === 'themes'" role="dialog" aria-label="All themes">
+          <p class="m-0 mb-3.5 text-xs font-semibold">All themes</p>
           <template x-if="shown === 'themes'">
             <ul class="flex flex-col m-0 p-0 list-none divide-y divide-stone-700">
               <template x-for="item in catalog()" :key="item.slug">
