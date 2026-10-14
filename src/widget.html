@@ -70,8 +70,8 @@
               <template x-for="item in catalog()" :key="item.slug">
                 <li class="py-4 first:pt-0">
                   <a class="flex flex-col gap-2 text-stone-100 no-underline" :href="item.demo">
-                    <img class="block w-full aspect-[16/10] object-cover object-top rounded-lg border border-stone-700 bg-stone-800 shadow-xs" :src="item.image" alt="" width="280" height="175">
-                    <strong class="text-xs font-semibold" x-text="item.name"></strong>
+                    <img class="block w-full aspect-[4/3] object-cover object-top rounded-lg border border-stone-700 bg-stone-800 shadow-xs" :src="item.image" alt="" width="280" height="210">
+                    <strong class="block min-w-0 truncate text-xs font-semibold" x-text="item.title"></strong>
                   </a>
                 </li>
               </template>
