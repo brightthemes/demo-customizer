@@ -97,6 +97,10 @@ export function createCustomize(themeId) {
       return 'https://brightthemes.com/themes/' + this.themeId + '?ref=demo'
     },
 
+    themesUrl() {
+      return 'https://brightthemes.com/themes/?ref=demo'
+    },
+
     visible(control) {
       if (!control.when) return true
       return this.values[control.when.attr] === control.when.value
