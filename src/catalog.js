@@ -18,54 +18,12 @@ export const themes = [
   { slug: 'nikko', name: 'Nikko', title: 'Nikko — Newsletter & Membership Ghost Theme', image: 'https://brightthemes.com/images/themes/theme-nikko-screenshot.png', demo: 'https://nikko.brightthemes.com/' },
   { slug: 'dashi', name: 'Dashi', title: 'Dashi — Community & Platform Ghost Theme', image: 'https://brightthemes.com/images/themes/theme-dashi-screenshot.png', demo: 'https://dashi.brightthemes.com/' },
   { slug: 'joben', name: 'Joben', title: 'Joben — Blog & Newsletter Ghost Theme', image: 'https://brightthemes.com/images/themes/theme-joben-screenshot.png', demo: 'https://joben.brightthemes.com/' },
+  { slug: 'voice', name: 'Voice', title: 'Voice — Minimal Magazine Ghost Theme', image: 'https://brightthemes.com/images/themes/theme-voice-screenshot.png', demo: 'https://voice.brightthemes.com/' },
+  { slug: 'yoffa', name: 'Yoffa', title: 'Yoffa — Minimal Blog Ghost Theme', image: 'https://brightthemes.com/images/themes/theme-yoffa-screenshot.png', demo: 'https://yoffa.brightthemes.com/' },
   { slug: 'auden', name: 'Auden', title: 'Auden — Magazine & Membership Ghost Theme', image: 'https://brightthemes.com/images/themes/theme-auden-screenshot.png', demo: 'https://auden.brightthemes.com/' },
 ]
 
-export const covers = [1, 2, 6, 7, 8, 9, 10, 11, 12].map((index) =>
-  'https://glass.mymagic.page/content/images/2026/10/glass-bg-' + index + '.jpg'
-)
+// Ghost's own font lists (Settings › Design & branding › Typography): the preview header takes these names.
+export const headingFonts = ['Cardo', 'Chakra Petch', 'Fira Mono', 'Fira Sans', 'IBM Plex Serif', 'Inter', 'JetBrains Mono', 'Libre Baskerville', 'Lora', 'Manrope', 'Merriweather', 'Noto Sans', 'Noto Serif', 'Nunito', 'Old Standard TT', 'Poppins', 'Roboto', 'Rufina', 'Space Grotesk', 'Space Mono', 'Tenor Sans']
 
-export const headingFonts = [
-  ['', 'Theme default'],
-  ["'Cardo', serif", 'Cardo'],
-  ["'Chakra Petch', sans-serif", 'Chakra Petch'],
-  ["'Fira Mono', monospace", 'Fira Mono'],
-  ["'Fira Sans', sans-serif", 'Fira Sans'],
-  ["'IBM Plex Serif', serif", 'IBM Plex Serif'],
-  ["'Inter', sans-serif", 'Inter'],
-  ["'JetBrains Mono', monospace", 'JetBrains Mono'],
-  ["'Libre Baskerville', serif", 'Libre Baskerville'],
-  ["'Lora', serif", 'Lora'],
-  ["'Manrope', sans-serif", 'Manrope'],
-  ["'Merriweather', serif", 'Merriweather'],
-  ["'Noto Sans', sans-serif", 'Noto Sans'],
-  ["'Noto Serif', serif", 'Noto Serif'],
-  ["'Nunito', sans-serif", 'Nunito'],
-  ["'Old Standard TT', serif", 'Old Standard TT'],
-  ["'Poppins', sans-serif", 'Poppins'],
-  ["'Roboto', sans-serif", 'Roboto'],
-  ["'Rufina', serif", 'Rufina'],
-  ["'Space Grotesk', sans-serif", 'Space Grotesk'],
-  ["'Space Mono', monospace", 'Space Mono'],
-  ["'Tenor Sans', sans-serif", 'Tenor Sans'],
-]
-
-export const bodyFonts = [
-  ['', 'Theme default'],
-  ["'Fira Mono', monospace", 'Fira Mono'],
-  ["'Fira Sans', sans-serif", 'Fira Sans'],
-  ["'IBM Plex Serif', serif", 'IBM Plex Serif'],
-  ["'Inter', sans-serif", 'Inter'],
-  ["'JetBrains Mono', monospace", 'JetBrains Mono'],
-  ["'Lora', serif", 'Lora'],
-  ["'Manrope', sans-serif", 'Manrope'],
-  ["'Merriweather', serif", 'Merriweather'],
-  ["'Noto Sans', sans-serif", 'Noto Sans'],
-  ["'Noto Serif', serif", 'Noto Serif'],
-  ["'Nunito', sans-serif", 'Nunito'],
-  ["'Poppins', sans-serif", 'Poppins'],
-  ["'Roboto', sans-serif", 'Roboto'],
-  ["'Space Mono', monospace", 'Space Mono'],
-]
-
-export const fontStylesheet = 'https://fonts.bunny.net/css?family=cardo:400,700|chakra-petch:400|fira-mono:400,700|fira-sans:400,500,600|ibm-plex-serif:400,500,600|inter:400,500,600|jetbrains-mono:400,700|libre-baskerville:700|lora:400,700|manrope:300,500,700|merriweather:300,700|noto-sans:400,700|noto-serif:400,700|nunito:400,600,700|old-standard-tt:400,700|poppins:400,500,600|roboto:400,500,700|rufina:400,500,700|space-grotesk:700|space-mono:400,700|tenor-sans:400&display=swap'
+export const bodyFonts = ['Fira Mono', 'Fira Sans', 'IBM Plex Serif', 'Inter', 'JetBrains Mono', 'Lora', 'Manrope', 'Merriweather', 'Noto Sans', 'Noto Serif', 'Nunito', 'Poppins', 'Roboto', 'Space Mono']
