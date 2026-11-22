@@ -17,7 +17,7 @@ export function toHex(value, doc = document) {
   if (!probe.style.color) return null
   probe.style.display = 'none'
   doc.body.append(probe)
-  const rgb = (doc.defaultView || window).getComputedStyle(probe).color
+  const rgb = getComputedStyle(probe).color
   probe.remove()
   const match = rgb.match(/rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/)
   if (!match) return null
@@ -26,7 +26,7 @@ export function toHex(value, doc = document) {
 
 export function readSetting(reader, setting, doc = document) {
   if (!reader) return null
-  const style = (doc.defaultView || window).getComputedStyle(doc.body)
+  const style = getComputedStyle(doc.body)
   const prop = (name) => style.getPropertyValue(name).trim()
 
   if (reader.match) {
