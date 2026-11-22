@@ -1,52 +1,44 @@
-import { themes } from './catalog.js'
+import settings from './themes.json'
 
-const brand = { id: 'brand', type: 'brand' }
-const fonts = { id: 'fonts', type: 'fonts' }
+// Settings that make no sense to try on a demo: free text, uploads, links, IDs.
+const skip = (key, setting) =>
+  setting.type === 'text' || setting.type === 'image' || /(^|_)(link|url|id|slugs|logo)(_|$)/.test(key)
 
-const shared = [brand, fonts]
-
-const glass = [
-  brand,
-  {
-    id: 'background',
-    type: 'select',
-    label: 'Background',
-    attr: 'site-background',
-    target: 'body',
-    options: [
-      { value: 'cover-image', label: 'Cover image' },
-      { value: 'brand-color', label: 'Brand color' },
-      { value: 'graphite', label: 'Graphite' },
-      { value: 'cream', label: 'Cream' },
-    ],
+// Per theme, only where the generated settings need help:
+// hide/show (setting keys), labels (key → label), covers (images for Ghost's site cover).
+export const overrides = {
+  glass: {
+    covers: [1, 2, 6, 7, 8, 9, 10, 11, 12].map((index) =>
+      'https://glass.brightthemes.com/content/images/2026/10/glass-bg-' + index + '.jpg'
+    ),
   },
-  {
-    id: 'images',
-    type: 'images',
-    label: 'Image',
-    when: { attr: 'site-background', value: 'cover-image' },
-    image: '[data-background-image]',
-    container: '[data-background-container]',
-  },
-  {
-    id: 'pattern',
-    type: 'select',
-    label: 'Pattern',
-    attr: 'site-background-overlay',
-    target: 'body',
-    options: [
-      { value: 'none', label: 'None' },
-      { value: 'light', label: 'Light' },
-      { value: 'medium', label: 'Medium' },
-      { value: 'heavy', label: 'Heavy' },
-    ],
-  },
-  fonts,
-]
+}
 
-export const themeControls = Object.fromEntries(themes.map((theme) => [theme.slug, shared]))
-themeControls.glass = glass
+const humanize = (value) => {
+  const text = String(value).replace(/[_-]+/g, ' ').trim()
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}
 
-export function controlsFor(themeId) {
-  return themeControls[themeId] || shared
+// The page decides which groups apply, as in Ghost Admin: homepage settings on the home page, post settings on posts and pages.
+export function pageGroup(body = document.body) {
+  if (body.classList.contains('home-template')) return 'homepage'
+  if (body.classList.contains('post-template') || body.classList.contains('page-template')) return 'post'
+  return null
+}
+
+export function controlsFor(themeId, group) {
+  const extra = overrides[themeId] || {}
+  const list = Object.entries(settings[themeId] || {})
+    .filter(([key, setting]) => (extra.show || []).includes(key) || (!skip(key, setting) && !(extra.hide || []).includes(key)))
+    .filter(([, setting]) => !setting.group || setting.group === group)
+    .map(([key, setting]) => ({
+      key,
+      type: setting.type,
+      label: extra.labels?.[key] || humanize(key),
+      default: setting.default,
+      options: setting.type === 'boolean'
+        ? [{ value: 'true', label: 'On' }, { value: 'false', label: 'Off' }]
+        : (setting.options || []).map((value) => ({ value, label: humanize(value) })),
+    }))
+  return { settings: list, covers: extra.covers || [] }
 }
