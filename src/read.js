@@ -85,3 +85,26 @@ export function writeSetting(reader, value, doc = document) {
   }
   return false
 }
+
+// Whether the page shows a dark background (the theme's dark scheme, a dark theme, the system preference), from the
+// first background color set on <body> or <html>. A canvas reads any color format (color-mix(), oklch()…) as RGB.
+let canvas = null
+export function isDark(doc = document) {
+  const view = doc.defaultView || window
+  for (const el of [doc.body, doc.documentElement]) {
+    if (!el) continue
+    const color = view.getComputedStyle(el).backgroundColor
+    if (!color || color === 'transparent' || /^rgba\(.*,\s*0\)$/.test(color)) continue
+    canvas ||= document.createElement('canvas')
+    canvas.width = canvas.height = 1
+    const context = canvas.getContext('2d', { willReadFrequently: true })
+    context.clearRect(0, 0, 1, 1)
+    context.fillStyle = '#fff'
+    context.fillStyle = color
+    context.fillRect(0, 0, 1, 1)
+    const [r, g, b, a] = context.getImageData(0, 0, 1, 1).data
+    if (a === 0) continue
+    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 < 0.5
+  }
+  return false
+}

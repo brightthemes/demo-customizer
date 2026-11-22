@@ -1,7 +1,7 @@
 import { themes, headingFonts, bodyFonts } from './catalog.js'
 import { controlsFor, pageGroup } from './config.js'
 import { render, currentDocument } from './preview.js'
-import { readSetting, writeSetting, themeFont, ghostFont } from './read.js'
+import { readSetting, writeSetting, themeFont, ghostFont, isDark } from './read.js'
 
 const names = (list, own) => [{ value: '', label: own ? 'Theme font (' + own + ')' : 'Theme font' }, ...list.map((name) => ({ value: name, label: name }))]
 
@@ -35,9 +35,13 @@ export function createCustomize(themeId, host) {
     bodyOptions: names(bodyFonts),
     timer: null,
     applying: 0,
+    dark: false,
+    schemeObserver: null,
 
     // What the demo shows now, read from the page before the panel draws its controls.
     init() {
+      this.watchScheme()
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.watchScheme())
       this.accent = readAccent()
       this.heading = ghostFont('heading')
       this.body = ghostFont('body')
@@ -49,6 +53,30 @@ export function createCustomize(themeId, host) {
         if (value === null || value === undefined) value = setting.type === 'boolean' ? String(Boolean(setting.default)) : setting.default
         if (value !== null && value !== undefined) this.current[setting.key] = String(value)
       }
+    },
+
+    // The buttons sit on the page: lighter on a dark page. Rechecked when the page (or the preview) changes its
+    // scheme, and again after the theme's background transition.
+    watchScheme() {
+      const doc = currentDocument()
+      const check = () => {
+        try { this.dark = isDark(doc) } catch {}
+      }
+      check()
+      this.schemeObserver?.disconnect()
+      this.schemeObserver = new MutationObserver(() => {
+        check()
+        setTimeout(check, 400)
+      })
+      const options = { attributes: true, attributeFilter: ['class', 'style', 'data-color-scheme', 'data-theme'] }
+      this.schemeObserver.observe(doc.documentElement, options)
+      if (doc.body) this.schemeObserver.observe(doc.body, options)
+    },
+
+    buttonClass(name) {
+      const open = name && this.panel === name
+      if (this.dark) return open ? 'bg-stone-400/70!' : 'bg-stone-400/40 hover:bg-stone-400/60'
+      return open ? 'bg-stone-900/90!' : 'bg-stone-900/40 hover:bg-stone-900/60'
     },
 
     shownValue(setting) {
@@ -183,6 +211,7 @@ export function createCustomize(themeId, host) {
           cover: this.cover,
           custom: this.custom(),
         }, host, (doc) => this.local(doc))
+        this.watchScheme()
       } catch {
         if (token === this.applying) this.failed = true
       } finally {
