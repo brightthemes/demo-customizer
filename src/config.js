@@ -69,24 +69,29 @@ const humanize = (value) => {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
-// The page decides which groups apply, as in Ghost Admin: homepage settings on the home page, post settings on posts and pages.
+// The page decides which groups apply, as in Ghost Admin: homepage settings on the home page, post settings on posts
+// and pages. The demo sites' extra home pages (routes to demo/home-2.hbs…, with a page's data) count as home pages.
 export function pageGroup(body = document.body) {
-  if (body.classList.contains('home-template')) return 'homepage'
+  if (body.classList.contains('home-template') || [...body.classList].some((name) => /^page-home(-|$)/.test(name))) return 'homepage'
   if (body.classList.contains('post-template') || body.classList.contains('page-template')) return 'post'
   return null
 }
 
-export function controlsFor(themeId, group) {
+// A homepage setting also shows on a page that isn't marked as one (a demo home whose route has no page data) when
+// its reader finds it there: a hero or card attribute only appears where the setting applies.
+export function controlsFor(themeId, group, found = () => false) {
   const extra = overrides[themeId] || {}
   const list = Object.entries(settings[themeId] || {})
     .filter(([key, setting]) => included(key, setting, extra))
-    .filter(([, setting]) => !setting.group || setting.group === group)
+    .map(([key, setting]) => [key, { ...setting, read: extra.read?.[key] || setting.read }])
+    .filter(([, setting]) => !setting.group || setting.group === group ||
+      (setting.group === 'homepage' && group !== 'post' && setting.read && !setting.read.has && found(setting)))
     .map(([key, setting]) => ({
       key,
       type: setting.type,
       label: extra.labels?.[key] || humanize(key),
       default: setting.default,
-      read: extra.read?.[key] || setting.read,
+      read: setting.read,
       options: setting.type === 'boolean'
         ? [{ value: 'true', label: 'On' }, { value: 'false', label: 'Off' }]
         : (setting.options || []).map((value) => ({ value, label: humanize(value) })),

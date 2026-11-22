@@ -14,7 +14,10 @@ function readAccent() {
 }
 
 export function createCustomize(themeId, host) {
-  const { settings, covers } = controlsFor(themeId, pageGroup())
+  const found = (setting) => {
+    try { return readSetting(setting.read, setting) !== null } catch { return false }
+  }
+  const { settings, covers } = controlsFor(themeId, pageGroup(), found)
   return {
     panel: null,
     shown: null,
@@ -29,6 +32,7 @@ export function createCustomize(themeId, host) {
     cover: '',
     values: {},
     current: {},
+    fixed: {},
     busy: false,
     failed: false,
     headingOptions: names(headingFonts),
@@ -166,10 +170,29 @@ export function createCustomize(themeId, host) {
           cover: this.cover,
           custom: this.custom(),
         }, host)
+        this.check()
       } catch {
         this.failed = true
       } finally {
         this.busy = false
+      }
+    },
+
+    // A demo page can set its own value (a demo home template, the page's code injection): when the preview shows
+    // something else than what was sent, the control goes back to what the page shows, with a note.
+    check() {
+      const doc = currentDocument()
+      for (const setting of this.settings) {
+        if (!(setting.key in this.values)) continue
+        let shown = null
+        try { shown = readSetting(setting.read, setting, doc) } catch {}
+        if (shown === null || String(shown).toLowerCase() === String(this.values[setting.key]).toLowerCase()) {
+          delete this.fixed[setting.key]
+          continue
+        }
+        this.fixed[setting.key] = true
+        this.current[setting.key] = String(shown)
+        delete this.values[setting.key]
       }
     },
 
