@@ -1,8 +1,10 @@
 import settings from './themes.json'
 
-// Settings that make no sense to try on a demo: free text, uploads, links, IDs.
+// Settings that make no sense to try on a demo: free text, uploads, links, IDs, and the theme's own font choices
+// (Ghost's heading and body fonts in the panel take precedence over them).
 const skip = (key, setting) =>
-  setting.type === 'text' || setting.type === 'image' || /(^|_)(link|url|id|slugs|logo)(_|$)/.test(key)
+  setting.type === 'text' || setting.type === 'image' || /(^|_)(link|url|id|slugs|logo)(_|$)/.test(key) ||
+  /^font_(headings|body|family)$/.test(key)
 
 // Per theme, only where the generated settings need help:
 // hide/show (setting keys), labels (key → label), covers (images for Ghost's site cover).

@@ -14,7 +14,7 @@ page. Ghost merges the values sent with the site's own:
 Nothing is stored: a reload or a link click shows the demo as it is.
 
 The controls come from each theme's `config.custom` (`src/themes.json`, written by `npm run sync`). Text, image,
-link and ID settings are left out; homepage settings show on the home page, post settings on posts and pages.
+link and ID settings are left out, and so are the theme's own font settings (Ghost's fonts in the panel replace them); homepage settings show on the home page, post settings on posts and pages.
 `overrides` in `src/config.js` hides or shows settings, renames them, or adds cover images for a theme.
 
 ## Commands
