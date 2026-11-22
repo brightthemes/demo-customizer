@@ -12,7 +12,7 @@
       </a>
     </div>
 
-    <div data-demo-drawer class="shrink-0 self-center w-0 max-h-screen min-h-0 overflow-hidden pointer-events-auto transition-[width] duration-[280ms] ease-[ease] motion-reduce:transition-none" :class="[panel && 'w-[min(18rem,calc(100vw-50px))]!']">
+    <div data-demo-drawer class="shrink-0 self-center w-0 max-h-screen min-h-0 overflow-hidden rounded-l-[var(--radius-xl)_clamp(0px,calc((100vh_-_100%)*1000),var(--radius-xl))] pointer-events-auto transition-[width] duration-[280ms] ease-[ease] motion-reduce:transition-none" :class="[panel && 'w-[min(18rem,calc(100vw-50px))]!']">
       <div data-demo-sheet class="box-border w-[min(18rem,calc(100vw-50px))] max-h-screen overflow-auto overscroll-contain p-4 bg-stone-900 text-stone-100" :style="sheetHeight ? { height: sheetHeight + 'px' } : {}">
         <div id="demo-appearance-panel" x-show="shown === 'appearance'" role="dialog" aria-label="Settings">
           <p class="m-0 pb-3 border-b border-stone-700 text-xs font-medium tracking-wide uppercase text-stone-300">Settings</p>
