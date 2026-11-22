@@ -1,7 +1,7 @@
 import { themes, headingFonts, bodyFonts } from './catalog.js'
 import { controlsFor, pageGroup } from './config.js'
 import { render, currentDocument } from './preview.js'
-import { readSetting, themeFont, ghostFont } from './read.js'
+import { readSetting, writeSetting, themeFont, ghostFont } from './read.js'
 
 const names = (list, own) => [{ value: '', label: own ? 'Theme font (' + own + ')' : 'Theme font' }, ...list.map((name) => ({ value: name, label: name }))]
 
@@ -34,6 +34,7 @@ export function createCustomize(themeId, host) {
     headingOptions: names(headingFonts),
     bodyOptions: names(bodyFonts),
     timer: null,
+    applying: 0,
 
     // What the demo shows now, read from the page before the panel draws its controls.
     init() {
@@ -122,6 +123,7 @@ export function createCustomize(themeId, host) {
       if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return
       this.accent = hex
       this.accentChanged = true
+      this.previewAccent(hex)
       this.update()
     },
 
@@ -135,9 +137,23 @@ export function createCustomize(themeId, host) {
       this.update()
     },
 
+    // Settings the page holds in a CSS variable or a data-* attribute change at once; Ghost's render follows.
+    previewValue(setting, value) {
+      try { writeSetting(setting.read, value, currentDocument()) } catch {}
+    },
+
     setValue(setting, value) {
       this.values[setting.key] = value
+      this.previewValue(setting, value)
       this.update()
+    },
+
+    // The values chosen so far, on a page Ghost has just rendered (it may predate the last change).
+    local(doc) {
+      if (this.accentChanged) doc.documentElement.style.setProperty('--ghost-accent-color', this.accent)
+      for (const setting of this.settings) {
+        if (setting.key in this.values) writeSetting(setting.read, this.values[setting.key], doc)
+      }
     },
 
     custom() {
@@ -152,10 +168,11 @@ export function createCustomize(themeId, host) {
 
     update() {
       clearTimeout(this.timer)
-      this.timer = setTimeout(() => this.apply(), 150)
+      this.timer = setTimeout(() => this.apply(), 50)
     },
 
     async apply() {
+      const token = ++this.applying
       this.busy = true
       this.failed = false
       try {
@@ -165,11 +182,11 @@ export function createCustomize(themeId, host) {
           body: this.body,
           cover: this.cover,
           custom: this.custom(),
-        }, host)
+        }, host, (doc) => this.local(doc))
       } catch {
-        this.failed = true
+        if (token === this.applying) this.failed = true
       } finally {
-        this.busy = false
+        if (token === this.applying) this.busy = false
       }
     },
 

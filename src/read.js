@@ -66,3 +66,22 @@ export function themeFont(which, doc = document) {
 export function ghostFont(which, doc = document) {
   return getComputedStyle(doc.documentElement).getPropertyValue(which === 'heading' ? '--gh-font-heading' : '--gh-font-body').replace(/["']/g, '').trim()
 }
+
+// Shows a value on the page right away, while Ghost renders it: CSS variables and data-* attributes only, the
+// readers above in reverse. Returns false for the rest (classes, markup), which wait for Ghost's render.
+export function writeSetting(reader, value, doc = document) {
+  if (!reader || value === null || value === undefined || value === '') return false
+  if (reader.css) {
+    doc.documentElement.style.setProperty(reader.css, reader.scale ? 'var(' + reader.scale + value + ')' : value)
+    return true
+  }
+  if (reader.attr) {
+    let raw = value
+    if (reader.values) raw = Object.keys(reader.values).find((key) => reader.values[key] === value)
+    const elements = doc.querySelectorAll('[' + reader.attr + ']')
+    if (raw === undefined || !elements.length) return false
+    for (const el of elements) el.setAttribute(reader.attr, raw)
+    return true
+  }
+  return false
+}
