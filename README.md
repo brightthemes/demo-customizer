@@ -13,6 +13,10 @@ page. Ghost merges the values sent with the site's own:
 
 Nothing is stored: a reload or a link click shows the demo as it is.
 
+The panel opens on what the demo shows: each control reads its current value from the page (`src/read.js`), from
+the attribute, presence flag or CSS variable the theme's templates write it to. `npm run sync` works these readers out
+from the templates; `read` in `overrides` covers the settings it can't (classes set in a partial, a value map).
+
 The controls come from each theme's `config.custom` (`src/themes.json`, written by `npm run sync`). The panel keeps
 to the look, not the layout: Ghost's brand color and fonts, the theme's color settings, and the settings each theme
 lists in `show` (backgrounds, patterns, font weights, card styles), never ones that switch partials; homepage settings show on the home page, post settings on posts and pages.

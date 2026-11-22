@@ -1,8 +1,9 @@
 import { themes, headingFonts, bodyFonts } from './catalog.js'
 import { controlsFor, pageGroup } from './config.js'
 import { render, currentDocument } from './preview.js'
+import { readSetting, themeFont, ghostFont } from './read.js'
 
-const names = (list) => [{ value: '', label: 'As in the demo' }, ...list.map((name) => ({ value: name, label: name }))]
+const names = (list, own) => [{ value: '', label: own ? 'Theme font (' + own + ')' : 'Theme font' }, ...list.map((name) => ({ value: name, label: name }))]
 
 function readAccent() {
   const raw = getComputedStyle(document.documentElement).getPropertyValue('--ghost-accent-color').trim()
@@ -27,11 +28,31 @@ export function createCustomize(themeId, host) {
     body: '',
     cover: '',
     values: {},
+    current: {},
     busy: false,
     failed: false,
     headingOptions: names(headingFonts),
     bodyOptions: names(bodyFonts),
     timer: null,
+
+    // What the demo shows now, read from the page before the panel draws its controls.
+    init() {
+      this.accent = readAccent()
+      this.heading = ghostFont('heading')
+      this.body = ghostFont('body')
+      this.headingOptions = names(headingFonts, this.heading ? '' : themeFont('heading'))
+      this.bodyOptions = names(bodyFonts, this.body ? '' : themeFont('body'))
+      for (const setting of this.settings) {
+        let value = null
+        try { value = readSetting(setting.read, setting) } catch {}
+        if (value === null || value === undefined) value = setting.type === 'boolean' ? String(Boolean(setting.default)) : setting.default
+        if (value !== null && value !== undefined) this.current[setting.key] = String(value)
+      }
+    },
+
+    shownValue(setting) {
+      return this.values[setting.key] ?? this.current[setting.key] ?? ''
+    },
 
     catalog() {
       return themes.filter((item) => item.slug !== this.themeId)
@@ -40,7 +61,6 @@ export function createCustomize(themeId, host) {
     reveal() {
       this.el = this.$el
       const show = () => {
-        this.accent = readAccent()
         this.$el.hidden = false
       }
       if ('requestIdleCallback' in window) requestIdleCallback(show, { timeout: 2000 })
@@ -116,8 +136,7 @@ export function createCustomize(themeId, host) {
     },
 
     setValue(setting, value) {
-      if (value === '') delete this.values[setting.key]
-      else this.values[setting.key] = value
+      this.values[setting.key] = value
       this.update()
     },
 
@@ -155,7 +174,8 @@ export function createCustomize(themeId, host) {
     },
 
     colorValue(setting) {
-      return this.values[setting.key] || (/^#[0-9a-fA-F]{6}$/.test(setting.default) ? setting.default : '#000000')
+      const value = this.shownValue(setting)
+      return /^#[0-9a-fA-F]{6}$/.test(value) ? value : '#000000'
     },
 
     fillSelect(el, options, value) {
