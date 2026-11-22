@@ -1,20 +1,35 @@
 import settings from './themes.json'
 
-// Settings that make no sense to try on a demo: free text, uploads, links, IDs, and the theme's own font choices
-// (Ghost's heading and body fonts in the panel take precedence over them).
-const skip = (key, setting) =>
-  setting.type === 'text' || setting.type === 'image' || /(^|_)(link|url|id|slugs|logo)(_|$)/.test(key) ||
-  /^font_(headings|body|family)$/.test(key)
-
-// Per theme, only where the generated settings need help:
-// hide/show (setting keys), labels (key → label), covers (images for Ghost's site cover).
+// The panel keeps to what changes the look without changing the layout: Ghost's brand color and fonts (in the
+// panel itself), the theme's color settings, and per theme the settings listed in `show` (backgrounds, patterns,
+// font weights, card styles: values the theme's CSS reads, not ones that switch partials).
+// Per theme: show (setting keys), hide (keys, e.g. a color setting), labels (key → label), covers (Ghost's site cover).
 export const overrides = {
   glass: {
+    show: ['ui_font_family', 'headings_font_weight', 'site_background', 'site_background_overlay'],
+    labels: { ui_font_family: 'UI font' },
     covers: [1, 2, 6, 7, 8, 9, 10, 11, 12].map((index) =>
       'https://glass.brightthemes.com/content/images/2026/10/glass-bg-' + index + '.jpg'
     ),
   },
+  prose: { show: ['ui_font_family', 'heading_font_weight', 'divider_style', 'first_letter_drop_cap'], labels: { ui_font_family: 'UI font' } },
+  gazet: { show: ['headings_font_weight', 'post_title_alignment', 'enable_dropcaps'] },
+  brief: { show: ['hero_text_alignment'] },
+  pulse: { show: ['styled_episode_number'] },
+  array: { show: ['header_last_nav_item_styled', 'hero_background', 'tag_card_background'] },
+  flair: { show: ['hero_background_style', 'post_card_style'] },
+  bokeh: { show: ['grain_background', 'post_card_image_aspect_ratio'] },
+  saaga: { show: ['post_card_image_aspect_ratio'] },
+  curie: { show: ['styled_header_nav_items', 'post_card_image_aspect_ratio'] },
+  maali: { show: ['enable_drop_caps'] },
+  tuuli: { show: ['background_accent'] },
+  fumio: { show: ['background_pattern', 'project_card_color'] },
+  joben: { show: ['post_card_tag_accent_bg'] },
+  yoffa: { show: ['hero_cover_image_aspect_ratio'] },
 }
+
+const included = (key, setting, extra) =>
+  !(extra.hide || []).includes(key) && (setting.type === 'color' || (extra.show || []).includes(key))
 
 const humanize = (value) => {
   const text = String(value).replace(/[_-]+/g, ' ').trim()
@@ -31,7 +46,7 @@ export function pageGroup(body = document.body) {
 export function controlsFor(themeId, group) {
   const extra = overrides[themeId] || {}
   const list = Object.entries(settings[themeId] || {})
-    .filter(([key, setting]) => (extra.show || []).includes(key) || (!skip(key, setting) && !(extra.hide || []).includes(key)))
+    .filter(([key, setting]) => included(key, setting, extra))
     .filter(([, setting]) => !setting.group || setting.group === group)
     .map(([key, setting]) => ({
       key,

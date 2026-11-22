@@ -13,9 +13,11 @@ page. Ghost merges the values sent with the site's own:
 
 Nothing is stored: a reload or a link click shows the demo as it is.
 
-The controls come from each theme's `config.custom` (`src/themes.json`, written by `npm run sync`). Text, image,
-link and ID settings are left out, and so are the theme's own font settings (Ghost's fonts in the panel replace them); homepage settings show on the home page, post settings on posts and pages.
-`overrides` in `src/config.js` hides or shows settings, renames them, or adds cover images for a theme.
+The controls come from each theme's `config.custom` (`src/themes.json`, written by `npm run sync`). The panel keeps
+to the look, not the layout: Ghost's brand color and fonts, the theme's color settings, and the settings each theme
+lists in `show` (backgrounds, patterns, font weights, card styles), never ones that switch partials; homepage settings show on the home page, post settings on posts and pages.
+`overrides` in `src/config.js` lists those settings per theme, hides a color setting, renames settings, or adds cover
+images.
 
 ## Commands
 
