@@ -1,18 +1,18 @@
 <div hidden class="fixed inset-y-0 right-0 z-30 flex items-center pointer-events-none font-sans text-stone-100" x-data="customize" x-init="reveal()" @keydown.escape.window="close()">
   <div class="flex items-center gap-2 max-h-full">
     <div class="flex flex-col gap-2 shrink-0 self-center pointer-events-auto">
-      <button type="button" class="flex items-center justify-center size-10 rounded-xl bg-stone-900/40 text-white backdrop-blur-md cursor-pointer transition-colors hover:bg-stone-900/60 [&_svg]:size-[18px]" :class="panel === 'appearance' && 'bg-stone-900/90!'" @click="toggle('appearance')" :aria-expanded="panel === 'appearance'" aria-controls="demo-appearance-panel" aria-label="Settings">
+      <button type="button" class="flex items-center justify-center size-10 rounded-xl text-white backdrop-blur-md cursor-pointer transition-colors [&_svg]:size-[18px]" :class="buttonClass('appearance')" @click="toggle('appearance')" :aria-expanded="panel === 'appearance'" aria-controls="demo-appearance-panel" aria-label="Settings">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5H3"/><path d="M12 19H3"/><path d="M14 3v4"/><path d="M16 17v4"/><path d="M21 12h-9"/><path d="M21 19h-5"/><path d="M21 5h-7"/><path d="M8 10v4"/><path d="M8 12H3"/></svg>
       </button>
-      <button type="button" class="flex items-center justify-center size-10 rounded-xl bg-stone-900/40 text-white backdrop-blur-md cursor-pointer transition-colors hover:bg-stone-900/60 [&_svg]:size-[18px]" :class="panel === 'themes' && 'bg-stone-900/90!'" @click="toggle('themes')" :aria-expanded="panel === 'themes'" aria-controls="demo-themes-panel" aria-label="All ghost themes">
+      <button type="button" class="flex items-center justify-center size-10 rounded-xl text-white backdrop-blur-md cursor-pointer transition-colors [&_svg]:size-[18px]" :class="buttonClass('themes')" @click="toggle('themes')" :aria-expanded="panel === 'themes'" aria-controls="demo-themes-panel" aria-label="All ghost themes">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M14 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M4 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4"/><path d="M14 17h6m-3 -3v6"/></svg>
       </button>
-      <a class="flex items-center justify-center size-10 rounded-xl bg-stone-900/40 text-white backdrop-blur-md cursor-pointer transition-colors hover:bg-stone-900/60 no-underline [&_svg]:size-[18px]" :href="buyUrl()" aria-label="Buy this theme">
+      <a class="flex items-center justify-center size-10 rounded-xl text-white backdrop-blur-md cursor-pointer transition-colors no-underline [&_svg]:size-[18px]" :class="buttonClass()" :href="buyUrl()" aria-label="Buy this theme">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
       </a>
     </div>
 
-    <div data-demo-drawer class="shrink-0 self-center w-0 max-h-screen min-h-0 overflow-hidden pointer-events-auto transition-[width] duration-[280ms] ease-[ease] motion-reduce:transition-none" :class="[panel && 'w-[min(18rem,calc(100vw-50px))]!']">
+    <div data-demo-drawer class="shrink-0 self-center w-0 max-h-screen min-h-0 overflow-hidden rounded-l-[var(--radius-xl)_clamp(0px,calc((100vh_-_100%)*1000),var(--radius-xl))] pointer-events-auto transition-[width] duration-[280ms] ease-[ease] motion-reduce:transition-none" :class="[panel && 'w-[min(18rem,calc(100vw-50px))]!']">
       <div data-demo-sheet class="box-border w-[min(18rem,calc(100vw-50px))] max-h-screen overflow-auto overscroll-contain p-4 bg-stone-900 text-stone-100" :style="sheetHeight ? { height: sheetHeight + 'px' } : {}">
         <div id="demo-appearance-panel" x-show="shown === 'appearance'" role="dialog" aria-label="Settings">
           <p class="m-0 pb-3 border-b border-stone-700 text-xs font-medium tracking-wide uppercase text-stone-300">Settings</p>
@@ -48,7 +48,7 @@
                 <template x-if="setting.type === 'color'">
                   <label :data-setting="setting.key" class="flex flex-row items-center justify-between gap-1.5 mb-3.5">
                     <span class="text-[10px] font-medium tracking-wider uppercase text-stone-400" x-text="setting.label"></span>
-                    <input class="size-8 p-0 border border-stone-700 rounded-lg bg-transparent cursor-pointer overflow-hidden [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-0 [&::-webkit-color-swatch]:rounded-lg [&::-moz-color-swatch]:border-0 [&::-moz-color-swatch]:rounded-lg" type="color" :value="colorValue(setting)" @change="setValue(setting, $event.target.value)" :aria-label="setting.label">
+                    <input class="size-8 p-0 border border-stone-700 rounded-lg bg-transparent cursor-pointer overflow-hidden [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-0 [&::-webkit-color-swatch]:rounded-lg [&::-moz-color-swatch]:border-0 [&::-moz-color-swatch]:rounded-lg" type="color" :value="colorValue(setting)" @input="previewValue(setting, $event.target.value)" @change="setValue(setting, $event.target.value)" :aria-label="setting.label">
                   </label>
                 </template>
                 <template x-if="setting.type === 'select' || setting.type === 'boolean'">

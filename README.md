@@ -13,6 +13,10 @@ page. Ghost merges the values sent with the site's own:
 
 Nothing is stored: a reload or a link click shows the demo as it is.
 
+While Ghost renders, settings the page holds in a CSS variable or a `data-*` attribute (colors, font weights,
+backgrounds, patterns) change on the page right away, from their reader in reverse (`writeSetting` in `src/read.js`);
+the render then replaces the page. A newer change cancels a render still in progress.
+
 The panel opens on what the demo shows: each control reads its current value from the page (`src/read.js`), from
 the attribute, presence flag or CSS variable the theme's templates write it to. `npm run sync` works these readers out
 from the templates; `read` in `overrides` covers the settings it can't (classes set in a partial, a value map).

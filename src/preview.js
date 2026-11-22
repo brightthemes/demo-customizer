@@ -5,6 +5,7 @@
 
 let frame = null
 let request = 0
+let controller = null
 
 export function header({ accent, heading, body, cover, custom }) {
   const parts = []
@@ -29,15 +30,25 @@ export function currentDocument() {
   return frame?.contentDocument || document
 }
 
-export async function render(params, host) {
+// `prepare(doc)` runs on the new page before it's shown, to bring it up to changes made while Ghost was rendering.
+export async function render(params, host, prepare) {
   const id = ++request
-  const response = await fetch(window.location.href, {
-    method: 'POST',
-    headers: { 'x-ghost-preview': header(params) },
-    credentials: 'same-origin',
-  })
-  if (!response.ok) throw new Error('Preview failed: ' + response.status)
-  const html = await response.text()
+  controller?.abort()
+  controller = new AbortController()
+  let html
+  try {
+    const response = await fetch(window.location.href, {
+      method: 'POST',
+      headers: { 'x-ghost-preview': header(params) },
+      credentials: 'same-origin',
+      signal: controller.signal,
+    })
+    if (!response.ok) throw new Error('Preview failed: ' + response.status)
+    html = await response.text()
+  } catch (error) {
+    if (id !== request) return
+    throw error
+  }
   if (id !== request) return
 
   const scroll = frame ? frame.contentWindow.scrollY : window.scrollY
@@ -55,6 +66,7 @@ export async function render(params, host) {
   }
   next.contentWindow.scrollTo(0, scroll)
   wire(next.contentWindow)
+  try { prepare?.(next.contentDocument) } catch {}
   await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
   next.style.visibility = 'visible'
   frame?.remove()

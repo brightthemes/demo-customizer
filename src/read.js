@@ -66,3 +66,45 @@ export function themeFont(which, doc = document) {
 export function ghostFont(which, doc = document) {
   return getComputedStyle(doc.documentElement).getPropertyValue(which === 'heading' ? '--gh-font-heading' : '--gh-font-body').replace(/["']/g, '').trim()
 }
+
+// Shows a value on the page right away, while Ghost renders it: CSS variables and data-* attributes only, the
+// readers above in reverse. Returns false for the rest (classes, markup), which wait for Ghost's render.
+export function writeSetting(reader, value, doc = document) {
+  if (!reader || value === null || value === undefined || value === '') return false
+  if (reader.css) {
+    doc.documentElement.style.setProperty(reader.css, reader.scale ? 'var(' + reader.scale + value + ')' : value)
+    return true
+  }
+  if (reader.attr) {
+    let raw = value
+    if (reader.values) raw = Object.keys(reader.values).find((key) => reader.values[key] === value)
+    const elements = doc.querySelectorAll('[' + reader.attr + ']')
+    if (raw === undefined || !elements.length) return false
+    for (const el of elements) el.setAttribute(reader.attr, raw)
+    return true
+  }
+  return false
+}
+
+// Whether the page shows a dark background (the theme's dark scheme, a dark theme, the system preference), from the
+// first background color set on <body> or <html>. A canvas reads any color format (color-mix(), oklch()…) as RGB.
+let canvas = null
+export function isDark(doc = document) {
+  const view = doc.defaultView || window
+  for (const el of [doc.body, doc.documentElement]) {
+    if (!el) continue
+    const color = view.getComputedStyle(el).backgroundColor
+    if (!color || color === 'transparent' || /^rgba\(.*,\s*0\)$/.test(color)) continue
+    canvas ||= document.createElement('canvas')
+    canvas.width = canvas.height = 1
+    const context = canvas.getContext('2d', { willReadFrequently: true })
+    context.clearRect(0, 0, 1, 1)
+    context.fillStyle = '#fff'
+    context.fillStyle = color
+    context.fillRect(0, 0, 1, 1)
+    const [r, g, b, a] = context.getImageData(0, 0, 1, 1).data
+    if (a === 0) continue
+    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 < 0.5
+  }
+  return false
+}
