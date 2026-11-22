@@ -46,15 +46,15 @@
             <template x-for="setting in settings" :key="setting.key">
               <div>
                 <template x-if="setting.type === 'color'">
-                  <label class="flex flex-row items-center justify-between gap-1.5 mb-3.5">
+                  <label :data-setting="setting.key" class="flex flex-row items-center justify-between gap-1.5 mb-3.5">
                     <span class="text-[10px] font-medium tracking-wider uppercase text-stone-400" x-text="setting.label"></span>
                     <input class="size-8 p-0 border border-stone-700 rounded-lg bg-transparent cursor-pointer overflow-hidden [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-0 [&::-webkit-color-swatch]:rounded-lg [&::-moz-color-swatch]:border-0 [&::-moz-color-swatch]:rounded-lg" type="color" :value="colorValue(setting)" @change="setValue(setting, $event.target.value)" :aria-label="setting.label">
                   </label>
                 </template>
                 <template x-if="setting.type === 'select' || setting.type === 'boolean'">
-                  <label class="flex flex-col gap-1.5 mb-3.5">
+                  <label :data-setting="setting.key" class="flex flex-col gap-1.5 mb-3.5">
                     <span class="text-[10px] font-medium tracking-wider uppercase text-stone-400" x-text="setting.label"></span>
-                    <select class="scheme-dark appearance-none w-full py-1.5 pr-9 pl-2.5 text-xs text-stone-100 border border-stone-700 rounded-lg bg-stone-800 bg-no-repeat bg-[length:12px] bg-[position:right_12px_center] bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2712%27%20height=%2712%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27%23a8a29e%27%20stroke-width=%272.5%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27m6%209%206%206%206-6%27/%3E%3C/svg%3E')]" x-init="fillSelect($el, [{ value: '', label: 'As in the demo' }, ...setting.options], values[setting.key])" @change="setValue(setting, $event.target.value)"></select>
+                    <select class="scheme-dark appearance-none w-full py-1.5 pr-9 pl-2.5 text-xs text-stone-100 border border-stone-700 rounded-lg bg-stone-800 bg-no-repeat bg-[length:12px] bg-[position:right_12px_center] bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2712%27%20height=%2712%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27%23a8a29e%27%20stroke-width=%272.5%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27m6%209%206%206%206-6%27/%3E%3C/svg%3E')]" x-init="fillSelect($el, setting.options, shownValue(setting))" @change="setValue(setting, $event.target.value)"></select>
                   </label>
                 </template>
               </div>

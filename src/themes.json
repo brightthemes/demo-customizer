@@ -19,7 +19,11 @@
         "semibold",
         "bold"
       ],
-      "default": "medium"
+      "default": "medium",
+      "read": {
+        "css": "--font-weight-headings",
+        "scale": "--font-weight-"
+      }
     },
     "site_background": {
       "type": "select",
@@ -29,7 +33,10 @@
         "graphite",
         "cream"
       ],
-      "default": "cover-image"
+      "default": "cover-image",
+      "read": {
+        "attr": "data-site-background"
+      }
     },
     "site_background_overlay": {
       "type": "select",
@@ -39,7 +46,10 @@
         "medium",
         "heavy"
       ],
-      "default": "medium"
+      "default": "medium",
+      "read": {
+        "attr": "data-site-background-overlay"
+      }
     },
     "header_cta_text": {
       "type": "text"
@@ -131,7 +141,11 @@
         "semibold",
         "bold"
       ],
-      "default": "normal"
+      "default": "normal",
+      "read": {
+        "css": "--font-weight-heading",
+        "scale": "--font-weight-"
+      }
     },
     "header_search": {
       "type": "boolean",
@@ -183,7 +197,10 @@
     "book_cover_effect": {
       "type": "boolean",
       "default": true,
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "has": "[data-book-cover-effect]"
+      }
     },
     "table_of_contents": {
       "type": "boolean",
@@ -193,7 +210,10 @@
     "first_letter_drop_cap": {
       "type": "boolean",
       "default": true,
-      "group": "post"
+      "group": "post",
+      "read": {
+        "has": "[data-drop-cap]"
+      }
     },
     "divider_style": {
       "type": "select",
@@ -206,7 +226,10 @@
         "ornamental"
       ],
       "default": "ornamental",
-      "group": "post"
+      "group": "post",
+      "read": {
+        "attr": "data-divider-style"
+      }
     }
   },
   "thred": {
@@ -236,7 +259,10 @@
     },
     "use_portal_links": {
       "type": "boolean",
-      "default": false
+      "default": false,
+      "read": {
+        "has": "[data-portal=\"signin\"]"
+      }
     },
     "cta_text": {
       "type": "text"
@@ -293,7 +319,10 @@
         "categories"
       ],
       "default": "latest",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-default-feed"
+      }
     },
     "post_feed_style": {
       "type": "select",
@@ -325,15 +354,24 @@
   "gazet": {
     "background_color": {
       "type": "color",
-      "default": "#ffffff"
+      "default": "#ffffff",
+      "read": {
+        "css": "--color-bgr"
+      }
     },
     "text_color": {
       "type": "color",
-      "default": "#0d0d0d"
+      "default": "#0d0d0d",
+      "read": {
+        "css": "--color-typ"
+      }
     },
     "border_color": {
       "type": "color",
-      "default": "#0d0d0d"
+      "default": "#0d0d0d",
+      "read": {
+        "css": "--color-brd"
+      }
     },
     "headings_font_weight": {
       "type": "select",
@@ -343,7 +381,11 @@
         "semibold",
         "bold"
       ],
-      "default": "medium"
+      "default": "medium",
+      "read": {
+        "css": "--font-weight-headings",
+        "scale": "--font-weight-"
+      }
     },
     "header_logo_position": {
       "type": "select",
@@ -355,7 +397,10 @@
     },
     "use_portal_links": {
       "type": "boolean",
-      "default": true
+      "default": true,
+      "read": {
+        "has": "[data-portal=\"account/plans\"]"
+      }
     },
     "subscribe_cta_headline": {
       "type": "text"
@@ -381,7 +426,10 @@
         "6-posts-3-columns"
       ],
       "default": "dynamic",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-hero-layout"
+      }
     },
     "hero_posts_filter": {
       "type": "select",
@@ -459,7 +507,10 @@
     "enable_dropcaps": {
       "type": "boolean",
       "default": true,
-      "group": "post"
+      "group": "post",
+      "read": {
+        "has": "[data-dropcap]"
+      }
     }
   },
   "brief": {
@@ -470,7 +521,10 @@
         "light",
         "dark"
       ],
-      "default": "system"
+      "default": "system",
+      "read": {
+        "attr": "data-color-scheme"
+      }
     },
     "color_scheme_toggle_position": {
       "type": "select",
@@ -612,7 +666,10 @@
         "light",
         "dark"
       ],
-      "default": "system"
+      "default": "system",
+      "read": {
+        "attr": "data-color-scheme"
+      }
     },
     "font_headings": {
       "type": "select",
@@ -717,7 +774,10 @@
     "styled_episode_number": {
       "type": "boolean",
       "default": false,
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "has": "[data-styled-episode-number]"
+      }
     },
     "show_feature_image": {
       "type": "boolean",
@@ -733,15 +793,24 @@
   "array": {
     "background_color": {
       "type": "color",
-      "default": "#ffffff"
+      "default": "#ffffff",
+      "read": {
+        "css": "--color-background"
+      }
     },
     "text_color": {
       "type": "color",
-      "default": "#262626"
+      "default": "#262626",
+      "read": {
+        "css": "--color-typography"
+      }
     },
     "border_color": {
       "type": "color",
-      "default": "#e6e6e6"
+      "default": "#e6e6e6",
+      "read": {
+        "css": "--color-border"
+      }
     },
     "font_headings": {
       "type": "select",
@@ -783,7 +852,10 @@
     },
     "header_last_nav_item_styled": {
       "type": "boolean",
-      "default": true
+      "default": true,
+      "read": {
+        "has": "[data-nav-styled]"
+      }
     },
     "show_post_card_images": {
       "type": "boolean",
@@ -810,7 +882,10 @@
         "none"
       ],
       "default": "accent-color",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-hero-bg"
+      }
     },
     "featured_tags": {
       "type": "text",
@@ -869,7 +944,10 @@
         "3-column"
       ],
       "default": "1-column",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-post-feed"
+      }
     },
     "default_post_template": {
       "type": "select",
@@ -891,7 +969,10 @@
         "light",
         "dark"
       ],
-      "default": "system"
+      "default": "system",
+      "read": {
+        "attr": "data-color-scheme"
+      }
     },
     "font_headings": {
       "type": "select",
@@ -968,7 +1049,10 @@
         "none"
       ],
       "default": "none",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-hero"
+      }
     },
     "hero_action": {
       "type": "select",
@@ -1038,7 +1122,10 @@
         "light",
         "dark"
       ],
-      "default": "system"
+      "default": "system",
+      "read": {
+        "attr": "data-color-scheme"
+      }
     },
     "font_headings": {
       "type": "select",
@@ -1119,7 +1206,10 @@
         "hidden"
       ],
       "default": "right",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-hero-img"
+      }
     },
     "hero_action": {
       "type": "select",
@@ -1159,7 +1249,10 @@
         "grid"
       ],
       "default": "list",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-job-feed-layout"
+      }
     },
     "job_filter_slugs_source": {
       "type": "select",
@@ -1185,7 +1278,10 @@
         "all"
       ],
       "default": "5",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-template-tags"
+      }
     }
   },
   "bokeh": {
@@ -1200,7 +1296,10 @@
         "mint",
         "midnight"
       ],
-      "default": "system"
+      "default": "system",
+      "read": {
+        "attr": "data-color-scheme"
+      }
     },
     "font_headings": {
       "type": "select",
@@ -1310,7 +1409,10 @@
         "auto"
       ],
       "default": "1/1",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-image"
+      }
     },
     "post_card_content": {
       "type": "select",
@@ -1352,7 +1454,10 @@
         "light",
         "dark"
       ],
-      "default": "system"
+      "default": "system",
+      "read": {
+        "attr": "data-color-scheme"
+      }
     },
     "font_headings": {
       "type": "select",
@@ -1385,7 +1490,10 @@
     },
     "use_portal_links": {
       "type": "boolean",
-      "default": true
+      "default": true,
+      "read": {
+        "has": "[data-portal=\"account\"]"
+      }
     },
     "hero_style": {
       "type": "select",
@@ -1439,7 +1547,10 @@
         "list"
       ],
       "default": "alternating-list",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-feed"
+      }
     },
     "post_feed_toggle": {
       "type": "boolean",
@@ -1480,7 +1591,10 @@
         "light",
         "dark"
       ],
-      "default": "system"
+      "default": "system",
+      "read": {
+        "attr": "data-color-scheme"
+      }
     },
     "font_family": {
       "type": "select",
@@ -1508,7 +1622,10 @@
     },
     "use_portal_links": {
       "type": "boolean",
-      "default": true
+      "default": true,
+      "read": {
+        "has": "[data-portal=\"account\"]"
+      }
     },
     "dark_theme_logo": {
       "type": "image"
@@ -1555,7 +1672,10 @@
         "full-articles"
       ],
       "default": "timeline-with-content",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-feed"
+      }
     },
     "post_card_image_aspect_ratio": {
       "type": "select",
@@ -1568,7 +1688,10 @@
         "hidden"
       ],
       "default": "16/9",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-aspect-ratio"
+      }
     }
   },
   "maali": {
@@ -1579,7 +1702,10 @@
         "light",
         "dark"
       ],
-      "default": "system"
+      "default": "system",
+      "read": {
+        "attr": "data-color-scheme"
+      }
     },
     "font_family": {
       "type": "select",
@@ -1599,11 +1725,17 @@
     },
     "use_portal_links": {
       "type": "boolean",
-      "default": true
+      "default": true,
+      "read": {
+        "has": "[data-portal=\"account\"]"
+      }
     },
     "sticky_header": {
       "type": "boolean",
-      "default": false
+      "default": false,
+      "read": {
+        "has": "[data-style=\"sticky\"]"
+      }
     },
     "dark_theme_logo": {
       "type": "image"
@@ -1642,12 +1774,18 @@
         "1+3"
       ],
       "default": "mixed",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-layout"
+      }
     },
     "show_post_card_excerpts": {
       "type": "boolean",
       "default": false,
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "has": "[data-excerpts=\"true\"]"
+      }
     },
     "post_card_comment_count": {
       "type": "boolean",
@@ -1683,7 +1821,10 @@
     "enable_drop_caps": {
       "type": "boolean",
       "default": false,
-      "group": "post"
+      "group": "post",
+      "read": {
+        "has": "[data-drop-caps=\"true\"]"
+      }
     }
   },
   "rinne": {
@@ -1694,7 +1835,10 @@
         "light",
         "dark"
       ],
-      "default": "system"
+      "default": "system",
+      "read": {
+        "attr": "data-color-scheme"
+      }
     },
     "font_family": {
       "type": "select",
@@ -1717,11 +1861,17 @@
         "sticky",
         "floating"
       ],
-      "default": "normal"
+      "default": "normal",
+      "read": {
+        "attr": "data-header"
+      }
     },
     "use_portal_links": {
       "type": "boolean",
-      "default": true
+      "default": true,
+      "read": {
+        "has": "[data-portal=\"account\"]"
+      }
     },
     "cta_headline": {
       "type": "text"
@@ -1773,7 +1923,10 @@
         "hidden"
       ],
       "default": "sidebar",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-filter-position"
+      }
     },
     "resources_feed_layout": {
       "type": "select",
@@ -1782,7 +1935,10 @@
         "grid"
       ],
       "default": "grid",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-feed-layout"
+      }
     },
     "resources_card_image": {
       "type": "select",
@@ -1795,7 +1951,10 @@
         "hidden"
       ],
       "default": "small",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-image-style"
+      }
     },
     "image_lightbox": {
       "type": "boolean",
@@ -1814,7 +1973,10 @@
         "ivory",
         "skyblue"
       ],
-      "default": "system"
+      "default": "system",
+      "read": {
+        "attr": "data-color-scheme"
+      }
     },
     "font_family": {
       "type": "select",
@@ -1836,7 +1998,10 @@
         "sticky",
         "floating"
       ],
-      "default": "normal"
+      "default": "normal",
+      "read": {
+        "attr": "data-header"
+      }
     },
     "search_type": {
       "type": "select",
@@ -1849,7 +2014,10 @@
     },
     "use_portal_links": {
       "type": "boolean",
-      "default": true
+      "default": true,
+      "read": {
+        "has": "[data-portal=\"account\"]"
+      }
     },
     "cta_headline": {
       "type": "text"
@@ -1867,7 +2035,10 @@
         "hero-with-image-below"
       ],
       "default": "hero-as-left-sidebar",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-layout"
+      }
     },
     "hero_source_page_slug": {
       "type": "text",
@@ -1882,7 +2053,10 @@
         "grid"
       ],
       "default": "list-with-images",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-feed-layout"
+      }
     },
     "post_feed_layout": {
       "type": "select",
@@ -1893,7 +2067,10 @@
         "grid"
       ],
       "default": "list-with-images",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-feed-layout"
+      }
     },
     "featured_posts_section": {
       "type": "boolean",
@@ -1913,7 +2090,10 @@
         "sunrise"
       ],
       "default": "none",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-bg-accent"
+      }
     },
     "featured_tags_slugs": {
       "type": "text",
@@ -1969,7 +2149,10 @@
         "lines",
         "graph-paper"
       ],
-      "default": "none"
+      "default": "none",
+      "read": {
+        "attr": "data-bg"
+      }
     },
     "header_position": {
       "type": "select",
@@ -1978,7 +2161,10 @@
         "sticky",
         "floating"
       ],
-      "default": "normal"
+      "default": "normal",
+      "read": {
+        "attr": "data-header"
+      }
     },
     "search_type": {
       "type": "select",
@@ -2029,7 +2215,10 @@
         "alternating-list"
       ],
       "default": "asymmetric-grid",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-layout"
+      }
     },
     "max_project_count": {
       "type": "select",
@@ -2042,12 +2231,18 @@
         "6"
       ],
       "default": "6",
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-count"
+      }
     },
     "project_card_color": {
       "type": "boolean",
       "default": true,
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "attr": "data-colors"
+      }
     },
     "enable_breadcrumbs": {
       "type": "boolean",
@@ -2074,7 +2269,10 @@
   "nikko": {
     "secondary_color": {
       "type": "color",
-      "default": "#e052a5"
+      "default": "#e052a5",
+      "read": {
+        "css": "--color-secondary"
+      }
     },
     "default_color_scheme": {
       "type": "select",
@@ -2100,7 +2298,10 @@
     },
     "use_portal_links": {
       "type": "boolean",
-      "default": false
+      "default": false,
+      "read": {
+        "has": "[data-portal=\"signup\"]"
+      }
     },
     "hero_type": {
       "type": "select",
@@ -2175,7 +2376,10 @@
     },
     "use_portal_links": {
       "type": "boolean",
-      "default": false
+      "default": false,
+      "read": {
+        "has": "[data-portal=\"signup\"]"
+      }
     },
     "post_feed_style": {
       "type": "select",
@@ -2233,7 +2437,10 @@
   "joben": {
     "secondary_color": {
       "type": "color",
-      "default": "#20f3a2"
+      "default": "#20f3a2",
+      "read": {
+        "css": "--color-secondary"
+      }
     },
     "default_color_scheme": {
       "type": "select",
@@ -2293,7 +2500,10 @@
     "post_card_tag_accent_bg": {
       "type": "boolean",
       "default": false,
-      "group": "homepage"
+      "group": "homepage",
+      "read": {
+        "has": "[data-grid-color=\"true\"]"
+      }
     },
     "enable_image_lightbox": {
       "type": "boolean",
@@ -2309,15 +2519,24 @@
   "voice": {
     "background_color": {
       "type": "color",
-      "default": "#ffffff"
+      "default": "#ffffff",
+      "read": {
+        "css": "--color-background"
+      }
     },
     "text_color": {
       "type": "color",
-      "default": "#262626"
+      "default": "#262626",
+      "read": {
+        "css": "--color-typography"
+      }
     },
     "border_color": {
       "type": "color",
-      "default": "#e6e6e6"
+      "default": "#e6e6e6",
+      "read": {
+        "css": "--color-border"
+      }
     },
     "font_headings": {
       "type": "select",
@@ -2359,15 +2578,24 @@
   "yoffa": {
     "background_color": {
       "type": "color",
-      "default": "#ffffff"
+      "default": "#ffffff",
+      "read": {
+        "css": "--color-background"
+      }
     },
     "text_color": {
       "type": "color",
-      "default": "#262626"
+      "default": "#262626",
+      "read": {
+        "css": "--color-typography"
+      }
     },
     "border_color": {
       "type": "color",
-      "default": "#e6e6e6"
+      "default": "#e6e6e6",
+      "read": {
+        "css": "--color-border"
+      }
     },
     "font_headings": {
       "type": "select",
@@ -2431,7 +2659,10 @@
   "auden": {
     "secondary_color": {
       "type": "color",
-      "default": "#f9d400"
+      "default": "#f9d400",
+      "read": {
+        "css": "--color-secondary"
+      }
     },
     "default_color_scheme": {
       "type": "select",
@@ -2444,7 +2675,10 @@
     },
     "use_portal_links": {
       "type": "boolean",
-      "default": true
+      "default": true,
+      "read": {
+        "has": "[data-portal=\"signup\"]"
+      }
     },
     "enable_scroll_to_top": {
       "type": "boolean",
